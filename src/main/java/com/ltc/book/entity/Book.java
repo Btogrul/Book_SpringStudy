@@ -17,5 +17,8 @@ public class Book {
         private Integer bookYear;
         private Integer countOfPage;
 
+        @OneToOne
+        Author author;
+
 
 }

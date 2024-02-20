@@ -1,5 +1,6 @@
 package com.ltc.book.dto;
 
+import com.ltc.book.entity.Author;
 import lombok.*;
 
 @Data
@@ -12,4 +13,5 @@ public class BookDto {
    private String isbn;
    private Integer year;
    private Integer countOfPage;
+   private Author author;
 }
