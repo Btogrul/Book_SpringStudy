@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Data
+@Table(name = "books")
 @Entity
 @Builder
 @RequiredArgsConstructor
@@ -12,13 +13,19 @@ public class Book {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Long id;
+
         private String bookName;
         private String isbn;
-        private Integer bookYear;
+
+        @Column(name = "publication_year")
+        private Integer publicationYear;
+
+        @Column(name = "count_of_page")
         private Integer countOfPage;
 
-        @OneToOne
-        Author author;
+        @ManyToOne
+        @JoinColumn(name = "author_id")
+        private Author author;
 
 
 }

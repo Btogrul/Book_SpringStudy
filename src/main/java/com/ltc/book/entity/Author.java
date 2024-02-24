@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.List;
 
 @Data
+@Table(name = "authors")
 @Entity
 @Builder
 @RequiredArgsConstructor
@@ -17,9 +18,12 @@ public class Author {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String authorName;
     private String surname;
 
-    @OneToMany
-    List<Book> book;
+    @OneToMany(mappedBy = "author", cascade = CascadeType.DETACH, orphanRemoval = true)
+    private List<Book> books;
 }
+
+

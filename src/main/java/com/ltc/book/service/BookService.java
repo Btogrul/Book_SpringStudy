@@ -1,54 +1,41 @@
-//package com.ltc.book.service;
-//
-//import com.ltc.book.dto.BookDto;
-//import org.springframework.http.ResponseEntity;
-//import org.springframework.stereotype.Service;
-//
-//import java.util.ArrayList;
-//import java.util.List;
-//import java.util.stream.Collectors;
-//
-//@Service
-//public class BookService {
-//    ArrayList<BookDto> library = new ArrayList<>();
-//
-//    public List<BookDto> getLibrary() {
-//        return library;
-//    }
-//
-//    public List<BookDto> getBookById(int id) {
-//        return library
-//                .stream()
-//                .filter(book -> book.getId() == id)
-//                .collect(Collectors.toList());
-//    }
-//
-//    public ArrayList<BookDto> addBook(BookDto newBook) {
-//        library.add(newBook);
-//        return library;
-//
-//    }
-//
-//    public ArrayList<BookDto> updateBook(int id, BookDto updatedBook) {
-//        for (int i = 0; i < library.size(); i++) {
-//            BookDto bookDto = library.get(i);
-//            if (bookDto.getId() == id) {
-//                bookDto.setId(updatedBook.getId());
-//                bookDto.setBookName(updatedBook.getBookName());
-//                bookDto.setIsbn(updatedBook.getIsbn());
-//                bookDto.setYear(updatedBook.getYear());
-//                bookDto.setCountOfPage(updatedBook.getCountOfPage());
-//                library.set(i, updatedBook);
-//                break;
-//            }
-//        }
-//        return library;
-//
-//    }
-//
-//
-//    public ResponseEntity<String> deleteBook(int id) {
-//        library.removeIf(bookDto -> bookDto.getId() == id);
-//        return ResponseEntity.ok("Ugurla silindi");
-//    }
-//}
+package com.ltc.book.service;
+
+import com.ltc.book.dto.BookDto;
+import com.ltc.book.entity.Book;
+import com.ltc.book.repository.BookRepository;
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+public class BookService {
+    private final BookRepository bookRepository;
+    private final ModelMapper modelMapper;
+
+    public List<Book> getAll() {
+        return bookRepository.findAll();
+    }
+
+    public Book findById(Long id) {
+        return bookRepository.findById(id).orElseThrow();
+    }
+
+    public void addBook(BookDto newBook) {
+        Book book = modelMapper.map(newBook, Book.class);
+        bookRepository.save(book);
+    }
+
+    public void delete(Long id) {
+        Book book = bookRepository.findById(id).orElseThrow();
+        bookRepository.delete(book);
+    }
+
+    public void update(Long id, BookDto dto) {
+        Book book = bookRepository.findById(id).orElseThrow();
+        modelMapper.map(dto, book);
+        bookRepository.save(book);
+    }
+}
