@@ -3,6 +3,7 @@ package com.ltc.book.controller;
 import com.ltc.book.dto.AuthorDTO;
 import com.ltc.book.entity.Author;
 import com.ltc.book.service.AuthorService;
+import com.ltc.book.service.ScheduleTest;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
@@ -16,9 +17,11 @@ import java.util.List;
 public class AuthorController {
     private final AuthorService authorService;
     private final ModelMapper modelMapper;
+    private final ScheduleTest test;
 
     @GetMapping("/all")
     public List<Author> getAllAuthors() {
+        test.printMessage();
         return authorService.getAll();
     }
 
